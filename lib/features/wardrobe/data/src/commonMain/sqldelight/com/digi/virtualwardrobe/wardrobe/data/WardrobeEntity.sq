@@ -1,0 +1,11 @@
+CREATE TABLE WardrobeEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+
+insertWardrobe:
+    INSERT INTO WardrobeEntity(id, name) VALUES (?, ?);
+
+selectAll:
+    SELECT * FROM WardrobeEntity;

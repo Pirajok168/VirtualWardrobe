@@ -1,0 +1,4 @@
+CREATE TABLE Test (
+ player_number INTEGER PRIMARY KEY NOT NULL
+);
+

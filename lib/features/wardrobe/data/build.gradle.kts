@@ -1,15 +1,11 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-
-    alias(libs.plugins.room)
-    id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.1.10"
+    alias(libs.plugins.sql)
 }
 
 kotlin {
@@ -19,7 +15,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -28,19 +24,18 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
-    
 
-    
+
+
     sourceSets {
 
         commonMain.dependencies {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
-
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
@@ -65,14 +60,11 @@ android {
     }
 }
 
-dependencies {
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
-}
 
-room {
-    schemaDirectory("$projectDir/schemas")
+sqldelight {
+    databases {
+        create("WardrobeDatabase") {
+            packageName.set("com.digi.virtualwardrobe.wardrobe")
+        }
+    }
 }
-

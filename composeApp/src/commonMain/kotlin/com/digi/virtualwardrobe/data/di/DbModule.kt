@@ -1,9 +1,13 @@
 package com.digi.virtualwardrobe.data.di
 
-import com.digi.virtualwardrobe.data.database.WardrobeDao
-import com.digi.virtualwardrobe.data.db.AppDatabase
+
+import app.cash.sqldelight.db.SqlDriver
+import com.digi.virtualwardrobe.WardrobeDatabase
+import com.digi.virtualwardrobe.wardrobe.data.WardrobeEntityQueries
 import org.koin.dsl.module
 
 val dbModule = module {
-    single<WardrobeDao> { get<AppDatabase>().wardrobeDao() }
+    single<WardrobeDatabase> { WardrobeDatabase(get<SqlDriver>())}
+
+    single<WardrobeEntityQueries> { get<WardrobeDatabase>().wardrobeEntityQueries }
 }
