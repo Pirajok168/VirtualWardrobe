@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "8626062f4fb0db82e8b826728e4811c0",
+    "entities": [
+      {
+        "tableName": "String",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": []
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8626062f4fb0db82e8b826728e4811c0')"
+    ]
+  }
+}
