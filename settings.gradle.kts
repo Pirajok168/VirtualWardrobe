@@ -29,4 +29,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp",
-    ":lib:features:wardrobe", ":lib:features:wardrobe:domain", ":lib:features:wardrobe:data")
+    ":lib:features:wardrobe", ":lib:features:wardrobe:domain", ":lib:features:wardrobe:data",
+    ":lib:features:shared"
+)

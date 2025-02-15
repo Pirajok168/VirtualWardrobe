@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.digi.virtualwardrobe.wardrobe.screens.DetailsContent
+import com.digi.virtualwardrobe.wardrobe.screens.DetailsWardrobeScreen
 import com.digi.virtualwardrobe.wardrobe.screens.MainContent
 import kotlinx.serialization.json.Json
 
@@ -30,7 +30,7 @@ fun WardrobeScreenNavHost() {
 
             composable<WardrobeDetail> { backStackEntry ->
 
-                DetailsContent(
+                DetailsWardrobeScreen(
                     onBack = {
                         navController.popBackStack()
                     },

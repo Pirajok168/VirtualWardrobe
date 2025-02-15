@@ -26,17 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
-import com.digi.virtualwardrobe.wardrobe.viewModel.DetailWardrobeViewModel
 import com.digi.virtualwardrobe.wardrobe.viewModel.WardrobeViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun MainContent(
+internal fun MainContent(
     onShowDetails: (WardrobeItem) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope
@@ -47,7 +44,9 @@ fun MainContent(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = {
+                    viewModel.showChoosingImageUploadOptionBottomSheetCommand()
+                },
                 content = {
                     Icon(Icons.Outlined.Add, contentDescription = null)
                 }
@@ -91,39 +90,3 @@ fun MainContent(
 }
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-fun DetailsContent(
-    wardrobeItem: WardrobeItem,
-    onBack: () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
-) {
-
-    val detailViewModel: DetailWardrobeViewModel =
-        koinViewModel<DetailWardrobeViewModel> { parametersOf(wardrobeItem.id) }
-
-    val state by detailViewModel.uiState.collectAsState()
-    Column() {
-        with(sharedTransitionScope) {
-            Surface(
-                modifier = Modifier.size(180.dp)
-                    .sharedElement(
-                        rememberSharedContentState(key = "image-$wardrobeItem"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    ),
-                tonalElevation = 10.dp,
-                onClick = onBack
-            ) {
-
-            }
-        }
-
-        state.outfitsList.forEach {
-            Text(it.name)
-
-            Text(it.description.orEmpty())
-        }
-
-    }
-}

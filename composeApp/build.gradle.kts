@@ -74,6 +74,8 @@ kotlin {
 
             implementation(projects.lib.features.wardrobe)
             api(projects.lib.features.wardrobe.data)
+
+            implementation(projects.lib.features.shared)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.native.driver)

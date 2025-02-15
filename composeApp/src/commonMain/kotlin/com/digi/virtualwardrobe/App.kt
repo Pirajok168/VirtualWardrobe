@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import com.digi.virtualwardrobe.data.db.dbCoreModule
 import com.digi.virtualwardrobe.data.di.dbModule
 import com.digi.virtualwardrobe.presentation.root.AppContent
+import com.digi.virtualwardrobe.shared.SharedModule
 import com.digi.virtualwardrobe.wardrobe.WardrobeModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
@@ -23,7 +24,7 @@ object MyIsolatedKoinContext {
     fun getOrCreateKoinApp(appDeclaration: KoinAppDeclaration = {}): KoinApplication {
         return _koinApp ?: koinApplication {
             appDeclaration()
-            modules(dbCoreModule(), dbModule, WardrobeModule)
+            modules(SharedModule, dbCoreModule(), dbModule, WardrobeModule)
         }.also { _koinApp = it }
     }
 }

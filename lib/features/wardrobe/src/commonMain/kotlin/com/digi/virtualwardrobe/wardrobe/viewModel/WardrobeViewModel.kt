@@ -2,6 +2,8 @@ package com.digi.virtualwardrobe.wardrobe.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.digi.virtualwardrobe.shared.viewCommand.BottomSheetViewCommand
+import com.digi.virtualwardrobe.wardrobe.commands.ChoosingImageUploadOptionBottomSheetCommand
 import com.digi.virtualwardrobe.wardrobe.domain.repository.WardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.state.WardrobeState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class WardrobeViewModel(
-    private val repository: WardrobeRepository
+    private val repository: WardrobeRepository,
+    private val bottomSheetViewCommand: BottomSheetViewCommand
 ): ViewModel(){
     private val _uiState = MutableStateFlow(WardrobeState())
     val uiState: StateFlow<WardrobeState> = repository.wardrobeItems.map {
@@ -25,9 +28,9 @@ class WardrobeViewModel(
         initialValue = WardrobeState()
     )
 
-    fun add()  {
+    fun showChoosingImageUploadOptionBottomSheetCommand()  {
         viewModelScope.launch {
-            repository.addWardrobeElem()
+            bottomSheetViewCommand.onShowBottomSheet(ChoosingImageUploadOptionBottomSheetCommand)
         }
     }
 

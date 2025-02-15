@@ -71,15 +71,12 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.nav)
-
-            implementation(project(":lib:features:wardrobe:domain"))
-            implementation(projects.lib.features.shared)
         }
     }
 }
 
 android {
-    namespace = "com.digi.virtualwardrobe.wardrobe"
+    namespace = "com.digi.virtualwardrobe.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     packaging {

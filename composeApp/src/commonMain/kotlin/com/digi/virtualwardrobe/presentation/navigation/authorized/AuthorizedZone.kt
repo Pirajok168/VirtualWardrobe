@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,6 +24,7 @@ import com.digi.virtualwardrobe.presentation.navigation.authorized.authorized_ro
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.Outfits
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.ShoppingCart
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.shared.TopLevelRoute
+import com.digi.virtualwardrobe.presentation.wrapper.BottomSheetWrapper
 import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeNavGraph
 import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeScreenNavHost
 
@@ -39,6 +41,7 @@ fun AuthorizedZone() {
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content() {
     val navController = rememberNavController()
@@ -89,6 +92,8 @@ private fun Content() {
             composable<ShoppingCart> { Text("111") }
         }
     }
+
+    BottomSheetWrapper()
 }
 
 
