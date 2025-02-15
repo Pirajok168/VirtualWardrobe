@@ -2,6 +2,7 @@ package com.digi.virtualwardrobe
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.ImageBitmap
 import com.digi.virtualwardrobe.data.db.dbCoreModule
 import com.digi.virtualwardrobe.data.di.dbModule
 import com.digi.virtualwardrobe.presentation.root.AppContent
@@ -31,7 +32,6 @@ object MyIsolatedKoinContext {
 @Preview
 fun App(appDeclaration: KoinAppDeclaration = {}) {
     MaterialTheme {
-
         KoinIsolatedContext(
             context = MyIsolatedKoinContext.getOrCreateKoinApp(appDeclaration)
         ) {

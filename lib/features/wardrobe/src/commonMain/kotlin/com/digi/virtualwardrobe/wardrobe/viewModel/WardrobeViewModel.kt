@@ -23,7 +23,7 @@ class WardrobeViewModel(
     private val _uiState = MutableStateFlow(WardrobeState())
     val uiState: StateFlow<WardrobeState> = repository.wardrobeItems.map {
         _uiState.value.copy(
-            wardrobeItems = it,
+            wardrobeItems = it.groupBy { it.type },
         )
     }.stateIn(
         scope = viewModelScope,
