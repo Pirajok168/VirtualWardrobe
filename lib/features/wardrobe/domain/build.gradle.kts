@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(projects.lib.features.wardrobe.data)
+            implementation(libs.kotlinx.serialization.json)
         }
     }
 }

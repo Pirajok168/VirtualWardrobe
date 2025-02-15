@@ -1,0 +1,16 @@
+CREATE TABLE OutfitEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    image BLOB
+);
+
+
+
+insertOutfit:
+    INSERT INTO OutfitEntity (id, name, description, image)
+        VALUES (?, ?, ?, ?);
+
+
+selectAllOutfit:
+    SELECT * FROM OutfitEntity;

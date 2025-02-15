@@ -1,0 +1,28 @@
+
+
+CREATE TABLE OutfitWardrobeEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    outfit_id INTEGER NOT NULL,
+    wardrobe_id INTEGER NOT NULL,
+    FOREIGN KEY (outfit_id) REFERENCES OutfitEntity(id),
+    FOREIGN KEY (wardrobe_id) REFERENCES WardrobeEntity(id)
+);
+
+
+insertOutfitWardrobe:
+    INSERT INTO OutfitWardrobeEntity (outfit_id, wardrobe_id)
+        VALUES (?, ?);
+
+selectOutfitsByWardrobeId:
+    SELECT o.*
+        FROM OutfitEntity o
+        JOIN OutfitWardrobeEntity ow ON o.id = ow.outfit_id
+        WHERE ow.wardrobe_id = ?;
+
+selectOutfitsAndAllItemsWardrobe:
+    SELECT o.id AS outfit_id, o.name AS outfit_name,
+           w.id AS wardrobe_id, w.type AS wardrobe_type, w.description AS wardrobe_description, w.image AS wardrobe_image
+    FROM OutfitEntity o
+    JOIN OutfitWardrobeEntity ow ON o.id = ow.outfit_id
+    JOIN WardrobeEntity w ON ow.wardrobe_id = w.id
+    WHERE o.id = ?;

@@ -2,14 +2,13 @@ import com.digi.virtualwardrobe.data.model.WardrobeTypeEntity;
 
 CREATE TABLE WardrobeEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
     type TEXT AS WardrobeTypeEntity NOT NULL,
     description TEXT,
     image BLOB
 );
 
 insertWardrobe:
-    INSERT INTO WardrobeEntity(id, name,type, description, image) VALUES (?, ?, ?,?,?);
+    INSERT INTO WardrobeEntity(id ,type, description, image) VALUES (?,  ?,?,?);
 
 selectAll:
     SELECT * FROM WardrobeEntity;

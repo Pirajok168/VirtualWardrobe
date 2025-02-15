@@ -8,6 +8,6 @@ interface WardrobeDao {
 
     val wardrobeItems: Flow<List<WardrobeEntity>>
 
-    fun insertWardrobe(id: Long?, name: String, type: WardrobeTypeEntity, byteArray: ByteArray?, description: String?)
+    suspend fun insertWardrobe(id: Long?, type: WardrobeTypeEntity, byteArray: ByteArray?, description: String?)
 
 }
