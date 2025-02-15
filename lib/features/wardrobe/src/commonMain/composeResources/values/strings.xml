@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="make_photo">Сделать фото</string>
+    <string name="upload_photo">Загрузить фото</string>
+</resources>

@@ -25,8 +25,11 @@ import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.Out
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.ShoppingCart
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.shared.TopLevelRoute
 import com.digi.virtualwardrobe.presentation.wrapper.BottomSheetWrapper
+import com.digi.virtualwardrobe.wardrobe.navigation.CreateItemWardrobeFlow
 import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeNavGraph
 import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeScreenNavHost
+import com.digi.virtualwardrobe.wardrobe.navigation.onNavigateCreateItemWardrobeFlow
+import com.digi.virtualwardrobe.wardrobe.screens.CreateItemWardrobeFlowScreen
 
 @Composable
 fun AuthorizedZone() {
@@ -34,16 +37,23 @@ fun AuthorizedZone() {
 
     NavHost(navController, startDestination = MainContent) {
         composable<MainContent> {
-            Content()
+            Content(
+                onDecorationWardrobeItemFlow = navController::onNavigateCreateItemWardrobeFlow
+            )
+        }
+
+        composable<CreateItemWardrobeFlow> {
+            CreateItemWardrobeFlowScreen()
         }
     }
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Content() {
+private fun Content(
+    onDecorationWardrobeItemFlow: () -> Unit
+) {
     val navController = rememberNavController()
 
     val topLevelRoutes = remember {
@@ -63,7 +73,12 @@ private fun Content() {
                 val currentDestination = navBackStackEntry?.destination
                 topLevelRoutes.forEach { topLevelRoute ->
                     NavigationBarItem(
-                        icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
+                        icon = {
+                            Icon(
+                                topLevelRoute.icon,
+                                contentDescription = topLevelRoute.name
+                            )
+                        },
                         label = { Text(topLevelRoute.name) },
                         selected = topLevelRoute.route::class.qualifiedName == currentDestination?.route,
                         onClick = {
@@ -86,9 +101,13 @@ private fun Content() {
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = WardrobeNavGraph, Modifier.padding(innerPadding)) {
-            composable<WardrobeNavGraph> { WardrobeScreenNavHost()  }
-            composable<Outfits> {  Text("444") }
+        NavHost(
+            navController,
+            startDestination = WardrobeNavGraph,
+            Modifier.padding(innerPadding)
+        ) {
+            composable<WardrobeNavGraph> { WardrobeScreenNavHost(onDecorationWardrobeItemFlow = onDecorationWardrobeItemFlow) }
+            composable<Outfits> { Text("444") }
             composable<ShoppingCart> { Text("111") }
         }
     }

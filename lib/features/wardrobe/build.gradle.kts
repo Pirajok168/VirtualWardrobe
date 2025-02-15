@@ -71,8 +71,16 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.nav)
+            implementation("io.coil-kt.coil3:coil-compose:3.1.0")
 
-            implementation(project(":lib:features:wardrobe:domain"))
+            // https://github.com/vinceglb/FileKit?tab=readme-ov-file
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.compose)
+
+            // https://github.com/onseok/peekaboo
+            implementation("io.github.onseok:peekaboo-ui:0.5.2")
+
+            implementation(projects.lib.features.wardrobe.domain)
             implementation(projects.lib.features.shared)
         }
     }
@@ -81,7 +89,7 @@ kotlin {
 android {
     namespace = "com.digi.virtualwardrobe.wardrobe"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import com.digi.virtualwardrobe.shared.model.BottomSheetCommand
 import com.digi.virtualwardrobe.shared.model.NoCommand
 import com.digi.virtualwardrobe.shared.viewModel.BottomSheetViewModel
+import com.digi.virtualwardrobe.wardrobe.bottomSheet.ChoosingImageUploadOptionBottomSheetBody
 import com.digi.virtualwardrobe.wardrobe.commands.ChoosingImageUploadOptionBottomSheetCommand
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -68,7 +69,7 @@ fun BottomSheetWrapper() {
 private fun Content(bottomSheetCommand: BottomSheetCommand) {
     when(bottomSheetCommand) {
         is ChoosingImageUploadOptionBottomSheetCommand -> {
-            Text("123123213")
+            ChoosingImageUploadOptionBottomSheetBody(bottomSheetCommand)
         }
     }
 

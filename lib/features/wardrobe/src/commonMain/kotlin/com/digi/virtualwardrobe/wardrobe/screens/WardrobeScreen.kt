@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
 import com.digi.virtualwardrobe.wardrobe.viewModel.WardrobeViewModel
+import io.github.vinceglb.filekit.core.PlatformFile
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -36,7 +38,8 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun MainContent(
     onShowDetails: (WardrobeItem) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onDecorationWardrobeItemFlow: () -> Unit
 ) {
     val viewModel = koinViewModel<WardrobeViewModel>()
     val state by viewModel.uiState.collectAsState()
@@ -45,7 +48,9 @@ internal fun MainContent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.showChoosingImageUploadOptionBottomSheetCommand()
+                    viewModel.showChoosingImageUploadOptionBottomSheetCommand(
+                        onDecorationWardrobeItemFlow = onDecorationWardrobeItemFlow,
+                    )
                 },
                 content = {
                     Icon(Icons.Outlined.Add, contentDescription = null)
