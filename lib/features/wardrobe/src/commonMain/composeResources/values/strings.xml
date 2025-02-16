@@ -2,4 +2,13 @@
 
     <string name="make_photo">Сделать фото</string>
     <string name="upload_photo">Загрузить фото</string>
+    <string name="choose_type_wardrobe">Выберите категорию</string>
+    <string name="choose_type_wardrobe_description">Выбрав категорию, вы сможете навести порядок у себя шкафу</string>
+    <string name="t_short_type">Футболка</string>
+    <string name="hoodie_type">Худи</string>
+    <string name="jeans_type">Джинсы</string>
+    <string name="save">Сохранить</string>
+    <string name="selected_type_wardrobe">Выбранная категория</string>
+    <string name="user_description_wardrobe">Вы можете добавить описание для вашей вещи.\nВсе зависит от вашей фантазии</string>
+    <string name="add">Добавить</string>
 </resources>

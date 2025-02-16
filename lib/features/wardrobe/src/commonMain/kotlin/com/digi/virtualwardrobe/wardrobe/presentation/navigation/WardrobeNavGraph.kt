@@ -1,4 +1,4 @@
-package com.digi.virtualwardrobe.wardrobe.navigation
+package com.digi.virtualwardrobe.wardrobe.presentation.navigation
 
 import androidx.navigation.NavController
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
@@ -12,10 +12,7 @@ data object WardrobeNavGraph
 data object WardrobeScreen
 
 @Serializable
-data class WardrobeDetail(val wardrobeItem: String)
+data class WardrobeDetail(val wardrobeItem: Long)
 
 @Serializable
 data object CreateItemWardrobeFlow
-
-fun NavController.onNavigateCreateItemWardrobeFlow() =
-    navigate(CreateItemWardrobeFlow)

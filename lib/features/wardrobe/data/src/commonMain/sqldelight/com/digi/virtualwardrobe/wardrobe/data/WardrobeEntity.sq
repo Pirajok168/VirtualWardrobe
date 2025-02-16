@@ -12,3 +12,6 @@ insertWardrobe:
 
 selectAll:
     SELECT * FROM WardrobeEntity;
+
+selectWardrobeById:
+    SELECT * FROM WardrobeEntity WHERE id = ?;

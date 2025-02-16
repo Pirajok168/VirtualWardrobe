@@ -1,4 +1,4 @@
-package com.digi.virtualwardrobe.wardrobe.bottomSheet
+package com.digi.virtualwardrobe.wardrobe.presentation.bottomSheet
 
 import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Arrangement

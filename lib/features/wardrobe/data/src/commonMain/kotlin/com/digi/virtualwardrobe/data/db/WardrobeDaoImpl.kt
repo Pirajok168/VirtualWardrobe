@@ -17,11 +17,13 @@ class WardrobeDaoImpl(
             .mapToList(Dispatchers.IO)
 
     override suspend fun insertWardrobe(
-        id: Long?,
         type: WardrobeTypeEntity,
         byteArray: ByteArray?,
         description: String?
     ) =
-        wardrobeEntityQueries.insertWardrobe(id, type, description, byteArray)
+        wardrobeEntityQueries.insertWardrobe(null, type, description, byteArray)
+
+    override suspend fun getWardrobe(id: Long) =
+        wardrobeEntityQueries.selectWardrobeById(id).executeAsOne()
 
 }

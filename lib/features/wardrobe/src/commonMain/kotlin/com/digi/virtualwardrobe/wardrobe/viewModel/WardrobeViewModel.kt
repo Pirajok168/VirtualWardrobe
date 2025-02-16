@@ -7,13 +7,8 @@ import com.digi.virtualwardrobe.wardrobe.commands.ChoosingImageUploadOptionBotto
 import com.digi.virtualwardrobe.wardrobe.domain.repository.CreateWardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.domain.repository.WardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.state.WardrobeState
-import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,18 +19,20 @@ class WardrobeViewModel(
 ): ViewModel () {
     private val _uiState = MutableStateFlow(WardrobeState())
 
-    val uiState: StateFlow<WardrobeState> = combine(
-        _uiState,
-        repository.wardrobeItems
-    ) { state, wardrobeItems ->
-        state.copy(
-            wardrobeItems = wardrobeItems.groupBy { it.type },
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = WardrobeState()
-    )
+    init {
+        println("123123123 init")
+        viewModelScope.launch {
+            repository.wardrobeItems.collect { wardrobeItems ->
+                _uiState.update {
+                    it.copy(
+                        wardrobeItems = wardrobeItems.groupBy { it.type },
+                    )
+                }
+            }
+        }
+    }
+
+    val uiState: StateFlow<WardrobeState> = _uiState
 
     fun showChoosingImageUploadOptionBottomSheetCommand(
         onDecorationWardrobeItemFlow: () -> Unit
@@ -58,5 +55,10 @@ class WardrobeViewModel(
                 )
             )
         }
+    }
+
+    override fun onCleared() {
+        println("+++----===")
+        super.onCleared()
     }
 }

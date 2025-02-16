@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,11 +26,19 @@ import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.Out
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.ShoppingCart
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.shared.TopLevelRoute
 import com.digi.virtualwardrobe.presentation.wrapper.BottomSheetWrapper
-import com.digi.virtualwardrobe.wardrobe.navigation.CreateItemWardrobeFlow
-import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeNavGraph
-import com.digi.virtualwardrobe.wardrobe.navigation.WardrobeScreenNavHost
-import com.digi.virtualwardrobe.wardrobe.navigation.onNavigateCreateItemWardrobeFlow
-import com.digi.virtualwardrobe.wardrobe.screens.CreateItemWardrobeFlowScreen
+import com.digi.virtualwardrobe.wardrobe.presentation.navigation.CreateItemWardrobeFlow
+import com.digi.virtualwardrobe.wardrobe.presentation.navigation.WardrobeNavGraph
+import com.digi.virtualwardrobe.wardrobe.presentation.navigation.WardrobeScreenNavHost
+import com.digi.virtualwardrobe.wardrobe.presentation.screens.CreateItemWardrobeFlowScreen
+
+
+fun NavController.onNavigateCreateItemWardrobeFlow() =
+    navigate(CreateItemWardrobeFlow) {
+        popUpTo<MainContent> {
+            saveState =  true
+        }
+        launchSingleTop = true
+    }
 
 @Composable
 fun AuthorizedZone() {
@@ -43,9 +52,11 @@ fun AuthorizedZone() {
         }
 
         composable<CreateItemWardrobeFlow> {
-            CreateItemWardrobeFlowScreen()
+            CreateItemWardrobeFlowScreen(onClose = navController::popBackStack)
         }
     }
+
+    BottomSheetWrapper()
 }
 
 
@@ -112,7 +123,7 @@ private fun Content(
         }
     }
 
-    BottomSheetWrapper()
+
 }
 
 

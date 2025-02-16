@@ -13,5 +13,5 @@ val WardrobeDomainModule = module {
 
     single<WardrobeRepository> {  WardrobeRepositoryImpl(get(), get()) }
 
-    single<CreateWardrobeRepository> {  CreateWardrobeRepositoryImpl() }
+    single<CreateWardrobeRepository> {  CreateWardrobeRepositoryImpl(get()) }
 }

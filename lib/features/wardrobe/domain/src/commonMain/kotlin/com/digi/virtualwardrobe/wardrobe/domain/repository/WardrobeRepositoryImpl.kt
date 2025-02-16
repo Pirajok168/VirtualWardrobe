@@ -7,7 +7,10 @@ import com.digi.virtualwardrobe.wardrobe.domain.models.Outfit
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class WardrobeRepositoryImpl(
     private val wardrobeDao: WardrobeDao,
@@ -19,14 +22,14 @@ class WardrobeRepositoryImpl(
             it.map {
                 WardrobeItem(
                     it.id,
-                    WardrobeType.valueOf(it.type.toString())
+                    WardrobeType.valueOf(it.type.toString()),
+                    byteArray = it.image
                 )
             }
         }
 
     override suspend fun addWardrobeElem() {
         wardrobeDao.insertWardrobe(
-            null,
             WardrobeTypeEntity.valueOf(""),
             null,
             null
@@ -35,4 +38,14 @@ class WardrobeRepositoryImpl(
 
     override fun selectOutfitsByWardrobeId(id: Long): Flow<List<Outfit>> =
         outfitWardrobeDao.selectOutfitsByWardrobeId(id).map { it.map { Outfit(it.id, it.name, it.description, it.image) }  }
+
+    override suspend fun getWardrobe(id: Long): WardrobeItem {
+        return wardrobeDao.getWardrobe(id).let {
+            WardrobeItem(
+                it.id,
+                WardrobeType.valueOf(it.type.toString()),
+                byteArray = it.image
+            )
+        }
+    }
 }
