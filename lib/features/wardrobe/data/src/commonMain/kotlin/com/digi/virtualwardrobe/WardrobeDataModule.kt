@@ -1,5 +1,7 @@
 package com.digi.virtualwardrobe
 
+import com.digi.virtualwardrobe.data.db.OutfitDao
+import com.digi.virtualwardrobe.data.db.OutfitDaoImpl
 import com.digi.virtualwardrobe.data.db.OutfitWardrobeDao
 import com.digi.virtualwardrobe.data.db.OutfitWardrobeDaoImpl
 import com.digi.virtualwardrobe.data.db.WardrobeDao
@@ -11,4 +13,6 @@ val WardrobeDataModule = module {
 
 
     single<OutfitWardrobeDao> { OutfitWardrobeDaoImpl(get()) }
+
+    single<OutfitDao> { OutfitDaoImpl(get()) }
 }

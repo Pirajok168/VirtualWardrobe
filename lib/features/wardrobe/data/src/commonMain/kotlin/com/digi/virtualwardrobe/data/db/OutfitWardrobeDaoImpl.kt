@@ -11,8 +11,12 @@ import kotlinx.coroutines.flow.Flow
 class OutfitWardrobeDaoImpl(
     private val wardrobeEntityQueries: OutfitWardrobeEntityQueries,
 ): OutfitWardrobeDao {
-    override fun selectOutfitsByWardrobeId(id: Long): Flow<List<OutfitEntity>> =
+    override suspend fun selectOutfitsByWardrobeId(id: Long): Flow<List<OutfitEntity>> =
         wardrobeEntityQueries.selectOutfitsByWardrobeId(id)
             .asFlow()
             .mapToList(Dispatchers.IO)
+
+    override suspend  fun insertOutfitWardrobe(outfitId: Long, wardrobeId: Long) {
+        wardrobeEntityQueries.insertOutfitWardrobe(outfitId, wardrobeId)
+    }
 }

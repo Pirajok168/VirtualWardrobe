@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,16 +29,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.digi.virtualwardrobe.wardrobe.domain.models.Outfit
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
 import com.digi.virtualwardrobe.wardrobe.viewModel.DetailWardrobeViewModel
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun DetailsWardrobeScreen(
     wardrobeItemId: Long,
@@ -54,7 +58,8 @@ internal fun DetailsWardrobeScreen(
             wardrobeItem = it,
             onBack = onBack,
             sharedTransitionScope = sharedTransitionScope,
-            animatedVisibilityScope = animatedVisibilityScope
+            animatedVisibilityScope = animatedVisibilityScope,
+            outfitsList = state.outfitsList
         )
     }
 
@@ -67,11 +72,12 @@ private fun Content(
     wardrobeItem: WardrobeItem,
     onBack: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    outfitsList: List<Outfit>,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(it).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -127,6 +133,33 @@ private fun Content(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(16.dp)
                     )
+                }
+            }
+
+            LazyRow {
+                items(outfitsList, key = { it.id }) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 8.dp),
+                            tonalElevation = 8.dp,
+                            shape = RoundedCornerShape(16.dp),
+                        ) {
+                            Box(Modifier.size(100.dp))
+                        }
+
+                        Text(
+                            text = it.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+
                 }
             }
         }

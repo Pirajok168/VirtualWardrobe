@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val WardrobeDomainModule = module {
     includes(WardrobeDataModule)
 
-    single<WardrobeRepository> {  WardrobeRepositoryImpl(get(), get()) }
+    single<WardrobeRepository> {  WardrobeRepositoryImpl(get(), get(), get()) }
 
     single<CreateWardrobeRepository> {  CreateWardrobeRepositoryImpl(get()) }
 }

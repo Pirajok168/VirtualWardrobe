@@ -2,6 +2,7 @@ package com.digi.virtualwardrobe.wardrobe.viewModel
 
 import com.digi.virtualwardrobe.shared.events.ViewModelEvents
 import com.digi.virtualwardrobe.wardrobe.actions.WardrobeActions
+import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
 import com.digi.virtualwardrobe.wardrobe.domain.repository.CreateWardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.domain.repository.WardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.state.WardrobeState
@@ -9,7 +10,7 @@ import com.digi.virtualwardrobe.wardrobe.state.WardrobeState
 class WardrobeViewModel(
     private val repository: WardrobeRepository,
     private val createWardrobeRepository: CreateWardrobeRepository
-) : ViewModelEvents<WardrobeState, WardrobeActions>(WardrobeState()) {
+) : ViewModelEvents<WardrobeState, WardrobeActions>(WardrobeState.WardrobeViewState()) {
 
     init {
         println("123123123 init")
@@ -17,9 +18,15 @@ class WardrobeViewModel(
         runOnIo {
             repository.wardrobeItems.collect { wardrobeItems ->
                 updateState {
-                    it.copy(
-                        wardrobeItems = wardrobeItems.groupBy { it.type },
-                    )
+                    when(it) {
+                        is WardrobeState.WardrobeViewState -> it.copy(
+                            wardrobeItems = wardrobeItems.groupBy { it.type },
+                        )
+
+                        is WardrobeState.WardrobeEditState -> it.copy(
+                            wardrobeItems = wardrobeItems.groupBy { it.type },
+                        )
+                    }
                 }
             }
         }
@@ -46,6 +53,27 @@ class WardrobeViewModel(
                 )
             )
         }
+    }
+
+    fun onEditMode() {
+        updateState { WardrobeState.WardrobeEditState(it.wardrobeItems) }
+    }
+
+    fun onViewMode() {
+        updateState { WardrobeState.WardrobeViewState(it.wardrobeItems) }
+    }
+
+    fun onChooseItem( elem: WardrobeItem) {
+        val state = uiState.value as WardrobeState.WardrobeEditState
+        updateState { state.copy(selectedItem = if(state.selectedItem.contains(elem)) state.selectedItem - elem else state.selectedItem + elem) }
+    }
+
+    fun onSetNewOutfit() {
+        val state = uiState.value as WardrobeState.WardrobeEditState
+        runOnIo {
+            repository.insertOutfit(state.selectedItem)
+        }
+        onViewMode()
     }
 
     override fun onCleared() {

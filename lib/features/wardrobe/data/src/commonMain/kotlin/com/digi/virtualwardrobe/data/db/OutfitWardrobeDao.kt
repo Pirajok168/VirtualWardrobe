@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface OutfitWardrobeDao {
 
-    fun selectOutfitsByWardrobeId(id: Long): Flow<List<OutfitEntity>>
+    suspend fun selectOutfitsByWardrobeId(id: Long): Flow<List<OutfitEntity>>
+
+    suspend fun insertOutfitWardrobe(outfitId: Long, wardrobeId: Long)
 }
