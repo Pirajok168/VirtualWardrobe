@@ -1,6 +1,10 @@
 package com.digi.virtualwardrobe.presentation.navigation.authorized
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.Menu
@@ -25,7 +29,6 @@ import com.digi.virtualwardrobe.presentation.navigation.authorized.authorized_ro
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.Outfits
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.ShoppingCart
 import com.digi.virtualwardrobe.presentation.navigation.authorized.tab_route.shared.TopLevelRoute
-import com.digi.virtualwardrobe.presentation.wrapper.BottomSheetWrapper
 import com.digi.virtualwardrobe.wardrobe.presentation.navigation.CreateItemWardrobeFlow
 import com.digi.virtualwardrobe.wardrobe.presentation.navigation.WardrobeNavGraph
 import com.digi.virtualwardrobe.wardrobe.presentation.navigation.WardrobeScreenNavHost
@@ -56,7 +59,6 @@ fun AuthorizedZone() {
         }
     }
 
-    BottomSheetWrapper()
 }
 
 
@@ -77,6 +79,7 @@ private fun Content(
 
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
         bottomBar = {
 
             NavigationBar {

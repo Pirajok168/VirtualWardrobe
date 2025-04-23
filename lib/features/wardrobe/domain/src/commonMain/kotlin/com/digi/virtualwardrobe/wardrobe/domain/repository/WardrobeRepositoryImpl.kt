@@ -21,9 +21,10 @@ class WardrobeRepositoryImpl(
         get() = wardrobeDao.wardrobeItems.map {
             it.map {
                 WardrobeItem(
-                    it.id,
-                    WardrobeType.valueOf(it.type.toString()),
-                    byteArray = it.image
+                    id = it.id,
+                    type = WardrobeType.valueOf(it.type.toString()),
+                    byteArray = it.image,
+                    description = it.description
                 )
             }
         }
@@ -42,9 +43,10 @@ class WardrobeRepositoryImpl(
     override suspend fun getWardrobe(id: Long): WardrobeItem {
         return wardrobeDao.getWardrobe(id).let {
             WardrobeItem(
-                it.id,
-                WardrobeType.valueOf(it.type.toString()),
-                byteArray = it.image
+                id = it.id,
+                type = WardrobeType.valueOf(it.type.toString()),
+                byteArray = it.image,
+                description = it.description
             )
         }
     }

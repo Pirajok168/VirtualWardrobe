@@ -1,12 +1,13 @@
 package com.digi.virtualwardrobe
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.core.uri.Uri
 import com.digi.virtualwardrobe.data.db.dbCoreModule
 import com.digi.virtualwardrobe.data.di.dbModule
 import com.digi.virtualwardrobe.presentation.root.AppContent
-import com.digi.virtualwardrobe.shared.SharedModule
 import com.digi.virtualwardrobe.wardrobe.WardrobeModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
@@ -24,15 +25,20 @@ object MyIsolatedKoinContext {
     fun getOrCreateKoinApp(appDeclaration: KoinAppDeclaration = {}): KoinApplication {
         return _koinApp ?: koinApplication {
             appDeclaration()
-            modules(SharedModule, dbCoreModule(), dbModule, WardrobeModule)
+            modules(dbCoreModule(), dbModule, WardrobeModule)
         }.also { _koinApp = it }
     }
 }
 
 @Composable
 @Preview
-fun App(appDeclaration: KoinAppDeclaration = {}) {
-    MaterialTheme {
+fun App(
+    colorScheme: ColorScheme = MaterialTheme.colorScheme,
+    appDeclaration: KoinAppDeclaration = {},
+) {
+    MaterialTheme(
+        colorScheme = colorScheme
+    ) {
         KoinIsolatedContext(
             context = MyIsolatedKoinContext.getOrCreateKoinApp(appDeclaration)
         ) {

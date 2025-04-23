@@ -1,6 +1,5 @@
 package com.digi.virtualwardrobe.wardrobe.presentation.bottomSheet
 
-import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,9 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,13 +18,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.digi.virtualwardrobe.shared.model.BottomSheetCommand
-import com.digi.virtualwardrobe.wardrobe.commands.ChoosingImageUploadOptionBottomSheetCommand
+import com.digi.virtualwardrobe.wardrobe.actions.WardrobeActions
 import com.preat.peekaboo.ui.camera.PeekabooCamera
 import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.github.vinceglb.filekit.core.PickerType
+import io.github.vinceglb.filekit.core.PlatformFile
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import virtualwardrobe.lib.features.wardrobe.generated.resources.Res
@@ -37,7 +34,7 @@ import virtualwardrobe.lib.features.wardrobe.generated.resources.upload_photo
 
 @Composable
 fun ChoosingImageUploadOptionBottomSheetBody(
-    command: ChoosingImageUploadOptionBottomSheetCommand
+    action: WardrobeActions.ShowChoosingImageUploadOptionBottomSheet
 ) {
 
     val launcher = rememberFilePickerLauncher(
@@ -45,7 +42,7 @@ fun ChoosingImageUploadOptionBottomSheetBody(
         type = PickerType.Image
     ) { files ->
         files?.let {
-            command.onUploadImage(it)
+            action.onUploadImage(it)
         }
     }
 

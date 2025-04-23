@@ -2,6 +2,7 @@ package com.digi.virtualwardrobe.wardrobe.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.digi.virtualwardrobe.shared.events.ViewModelEvents
 import com.digi.virtualwardrobe.wardrobe.domain.repository.WardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.state.DetailWardrobeState
 import com.digi.virtualwardrobe.wardrobe.state.WardrobeState
@@ -18,30 +19,21 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 class DetailWardrobeViewModel(
     private val idWardrobeItem: Long,
     private val repository: WardrobeRepository
-) : ViewModel() {
+) : ViewModelEvents<DetailWardrobeState, Unit>(DetailWardrobeState(emptyList(), null)) {
 
-    private val _uiState = MutableStateFlow(
-        DetailWardrobeState(
-            emptyList(),
-            null
-        )
-    )
-
-    val uiState: StateFlow<DetailWardrobeState> = _uiState
 
     init {
-        viewModelScope.launch {
+        runOnIo {
             val item = repository.getWardrobe(idWardrobeItem)
-            _uiState.update {
+            updateState {
                 it.copy(
                     wardrobeItem = item
                 )
             }
 
 
-
             repository.selectOutfitsByWardrobeId(idWardrobeItem).collect { outfits ->
-                _uiState.update {
+                updateState {
                     it.copy(
                         outfitsList = outfits
                     )

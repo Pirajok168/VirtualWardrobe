@@ -44,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,8 +53,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.Uri
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import com.digi.virtualwardrobe.shared.presentation.wrapper.BottomSheetWrapper
+import com.digi.virtualwardrobe.wardrobe.actions.CreateItemWardrobeActions
+import com.digi.virtualwardrobe.wardrobe.actions.WardrobeActions
 import com.digi.virtualwardrobe.wardrobe.presentation.components.WardrobeTypeItem
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeType
+import com.digi.virtualwardrobe.wardrobe.presentation.bottomSheet.ChooseWardrobeTypeBottomSheet
+import com.digi.virtualwardrobe.wardrobe.presentation.bottomSheet.ChoosingImageUploadOptionBottomSheetBody
 import com.digi.virtualwardrobe.wardrobe.viewModel.CreateItemWardrobeFlowViewModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
@@ -73,6 +84,23 @@ fun CreateItemWardrobeFlowScreen(onClose: () -> Unit) {
         koinViewModel<CreateItemWardrobeFlowViewModel>()
 
     val state by createItemWardrobeFlowViewModel.uiState.collectAsStateWithLifecycle()
+
+    val actions by createItemWardrobeFlowViewModel.actions.collectAsStateWithLifecycle(null)
+    var isShowBottomSheet by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(actions) {
+        when(actions) {
+            is CreateItemWardrobeActions.ChooseWardrobeTypeBottomSheet -> {
+                isShowBottomSheet = true;
+            }
+            CreateItemWardrobeActions.CloseBottomSheet -> {
+                isShowBottomSheet = false
+            }
+            null -> Unit
+        }
+    }
 
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
@@ -107,7 +135,6 @@ fun CreateItemWardrobeFlowScreen(onClose: () -> Unit) {
                         Image(
                             bitmap = it.decodeToImageBitmap(),
                             contentDescription = null,
-                            modifier = Modifier.size(300.dp).padding(16.dp)
                         )
                     }
                 }
@@ -140,6 +167,23 @@ fun CreateItemWardrobeFlowScreen(onClose: () -> Unit) {
             )
         }
     }
+
+    BottomSheetWrapper(
+        isShow = isShowBottomSheet,
+        bottomSheetContent = {
+            when(val action = actions) {
+                is CreateItemWardrobeActions.ChooseWardrobeTypeBottomSheet -> {
+                    ChooseWardrobeTypeBottomSheet(action)
+                }
+                CreateItemWardrobeActions.CloseBottomSheet,null -> Unit
+
+            }
+
+        },
+        onClose = {
+            isShowBottomSheet = false
+        }
+    )
 }
 
 

@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.digi.virtualwardrobe.wardrobe.actions.CreateItemWardrobeActions
 import com.digi.virtualwardrobe.wardrobe.commands.ChooseWardrobeTypeBottomSheetCommand
 import com.digi.virtualwardrobe.wardrobe.presentation.components.WardrobeTypeItem
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeType
@@ -43,7 +44,7 @@ import virtualwardrobe.lib.features.wardrobe.generated.resources.save
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseWardrobeTypeBottomSheet(
-    command: ChooseWardrobeTypeBottomSheetCommand
+    actions: CreateItemWardrobeActions.ChooseWardrobeTypeBottomSheet
 ) {
     val wardrobeTypes: List<WardrobeType> = remember {
         WardrobeType.entries
@@ -63,7 +64,7 @@ fun ChooseWardrobeTypeBottomSheet(
             actions = {
                 IconButton(
                     onClick = {
-                        command.onClose()
+                        actions.onClose()
                     },
                     content = {
                         Icon(
@@ -95,7 +96,7 @@ fun ChooseWardrobeTypeBottomSheet(
         AnimatedVisibility(selectedWardrobeType != null) {
             Button(
                 onClick = {
-                    command.onSaveType(selectedWardrobeType!!)
+                    actions.onSaveType(selectedWardrobeType!!)
                 },
                 content = {
                     Text(stringResource(Res.string.save))
