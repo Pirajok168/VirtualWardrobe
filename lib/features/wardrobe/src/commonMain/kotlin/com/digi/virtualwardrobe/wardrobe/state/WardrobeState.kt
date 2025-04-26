@@ -9,13 +9,20 @@ sealed class WardrobeState {
     open val wardrobeItems: Map<WardrobeType, List<WardrobeItem>> = emptyMap()
 
     data class WardrobeViewState(override val wardrobeItems: Map<WardrobeType, List<WardrobeItem>> = emptyMap()) :
-        WardrobeState()
+        WardrobeState() {
+        override fun isElemSelected(elem: WardrobeItem): Boolean =
+            false
+
+    }
 
 
     data class WardrobeEditState(
         override val wardrobeItems: Map<WardrobeType, List<WardrobeItem>>,
         val selectedItem: List<WardrobeItem> = emptyList()
-    ) : WardrobeState()
+    ) : WardrobeState() {
+        override fun isElemSelected(elem: WardrobeItem): Boolean =
+            selectedItem.contains(elem)
+    }
 
-
+    abstract fun isElemSelected(elem: WardrobeItem): Boolean
 }

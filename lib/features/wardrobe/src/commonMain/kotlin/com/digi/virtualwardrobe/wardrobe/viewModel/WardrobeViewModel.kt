@@ -57,10 +57,18 @@ class WardrobeViewModel(
 
     fun onEditMode() {
         updateState { WardrobeState.WardrobeEditState(it.wardrobeItems) }
+
+        runOnMain {
+            updateActions(WardrobeActions.EditMode)
+        }
+
     }
 
     fun onViewMode() {
         updateState { WardrobeState.WardrobeViewState(it.wardrobeItems) }
+        runOnMain {
+            updateActions(WardrobeActions.ViewMode)
+        }
     }
 
     fun onChooseItem( elem: WardrobeItem) {

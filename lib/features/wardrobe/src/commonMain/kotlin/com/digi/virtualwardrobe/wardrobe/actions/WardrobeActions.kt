@@ -10,4 +10,8 @@ sealed class WardrobeActions {
 
 
     data object  CloseBottomSheet : WardrobeActions()
+
+    data object EditMode : WardrobeActions()
+
+    data object ViewMode: WardrobeActions()
 }
