@@ -1,4 +1,4 @@
-package com.digi.virtualwardrobe.data.db
+package com.digi.virtualwardrobe.outfits.data
 
 interface OutfitDao {
     suspend fun insertOutfit(name: String,

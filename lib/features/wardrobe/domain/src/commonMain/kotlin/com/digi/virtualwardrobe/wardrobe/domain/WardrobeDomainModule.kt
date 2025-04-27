@@ -1,6 +1,7 @@
 package com.digi.virtualwardrobe.wardrobe.domain
 
 import com.digi.virtualwardrobe.WardrobeDataModule
+import com.digi.virtualwardrobe.outfits.domain.OutfitsDomainModule
 import com.digi.virtualwardrobe.wardrobe.domain.repository.CreateWardrobeRepository
 import com.digi.virtualwardrobe.wardrobe.domain.repository.CreateWardrobeRepositoryImpl
 import com.digi.virtualwardrobe.wardrobe.domain.repository.WardrobeRepository
@@ -10,6 +11,7 @@ import org.koin.dsl.module
 
 val WardrobeDomainModule = module {
     includes(WardrobeDataModule)
+    includes(OutfitsDomainModule)
 
     single<WardrobeRepository> {  WardrobeRepositoryImpl(get(), get(), get()) }
 

@@ -53,16 +53,14 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(projects.lib.features.wardrobe.data)
             implementation(projects.lib.features.outfits.data)
-            implementation(projects.lib.features.outfits.domain)
             implementation(libs.kotlinx.serialization.json)
         }
     }
 }
 
 android {
-    namespace = "com.digi.virtualwardrobe.wardrobe.domain"
+    namespace = "com.digi.virtualwardrobe.outfits.domain"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     packaging {

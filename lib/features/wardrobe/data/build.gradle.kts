@@ -36,6 +36,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.sqldelight.coroutines.extensions)
+            implementation(projects.lib.features.outfits.data)
         }
     }
 }
@@ -65,6 +66,7 @@ sqldelight {
     databases {
         create("WardrobeDatabase") {
             packageName.set("com.digi.virtualwardrobe.wardrobe")
+            dependency(projects.lib.features.outfits.data)
         }
     }
 }

@@ -4,14 +4,14 @@ CREATE TABLE OutfitWardrobeEntity (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     outfit_id INTEGER NOT NULL,
     wardrobe_id INTEGER NOT NULL,
-    FOREIGN KEY (outfit_id) REFERENCES OutfitEntity(id),
-    FOREIGN KEY (wardrobe_id) REFERENCES WardrobeEntity(id)
+    FOREIGN KEY (outfit_id) REFERENCES OutfitEntity(id) ON DELETE CASCADE,
+    FOREIGN KEY (wardrobe_id) REFERENCES WardrobeEntity(id) ON DELETE CASCADE
 );
 
 
 insertOutfitWardrobe:
-    INSERT INTO OutfitWardrobeEntity (outfit_id, wardrobe_id)
-        VALUES (?, ?);
+    INSERT OR REPLACE INTO OutfitWardrobeEntity (id, outfit_id, wardrobe_id)
+        VALUES (?,?, ?);
 
 selectOutfitsByWardrobeId:
     SELECT o.*

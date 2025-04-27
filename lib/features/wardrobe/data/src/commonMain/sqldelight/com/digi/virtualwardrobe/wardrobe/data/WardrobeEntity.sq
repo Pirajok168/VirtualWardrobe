@@ -8,7 +8,7 @@ CREATE TABLE WardrobeEntity (
 );
 
 insertWardrobe:
-    INSERT INTO WardrobeEntity(id ,type, description, image) VALUES (?,  ?,?,?);
+    INSERT OR REPLACE INTO WardrobeEntity(id ,type, description, image) VALUES (?,  ?,?,?);
 
 selectAll:
     SELECT * FROM WardrobeEntity;

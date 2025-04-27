@@ -1,12 +1,11 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     kotlin("plugin.serialization") version "2.1.10"
+    alias(libs.plugins.sql)
 }
 
 kotlin {
@@ -16,7 +15,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -25,44 +24,24 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
-    
-//    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "composeApp"
-//        browser {
-//            val rootDirPath = project.rootDir.path
-//            val projectDirPath = project.projectDir.path
-//            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
-//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-//                    static = (static ?: mutableListOf()).apply {
-//                        // Serve sources to debug inside browser
-//                        add(rootDirPath)
-//                        add(projectDirPath)
-//                    }
-//                }
-//            }
-//        }
-//        binaries.executable()
-//    }
-    
+
+
+
     sourceSets {
 
         commonMain.dependencies {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(projects.lib.features.wardrobe.data)
-            implementation(projects.lib.features.outfits.data)
-            implementation(projects.lib.features.outfits.domain)
-            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
 
 android {
-    namespace = "com.digi.virtualwardrobe.wardrobe.domain"
+    namespace = "com.digi.virtualwardrobe.outfits.data"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     packaging {
@@ -78,5 +57,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+
+sqldelight {
+    databases {
+        create("WardrobeDatabase") {
+            packageName.set("com.digi.virtualwardrobe.outfits")
+        }
     }
 }

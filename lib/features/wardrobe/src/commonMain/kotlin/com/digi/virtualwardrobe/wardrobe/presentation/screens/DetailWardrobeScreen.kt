@@ -32,7 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.digi.virtualwardrobe.wardrobe.domain.models.Outfit
+import com.digi.virtualwardrobe.wardrobe.domain.models.ReadyOutfit
 import com.digi.virtualwardrobe.wardrobe.domain.models.WardrobeItem
 import com.digi.virtualwardrobe.wardrobe.viewModel.DetailWardrobeViewModel
 import org.jetbrains.compose.resources.decodeToImageBitmap
@@ -73,7 +73,7 @@ private fun Content(
     onBack: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    outfitsList: List<Outfit>,
+    outfitsList: List<ReadyOutfit>,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),

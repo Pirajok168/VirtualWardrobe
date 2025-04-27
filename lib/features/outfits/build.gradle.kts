@@ -1,13 +1,15 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.sql)
     kotlin("plugin.serialization") version "2.1.10"
+    alias(libs.plugins.sql) apply false
 }
 
 kotlin {
@@ -26,7 +28,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            linkerOpts.add("-lsqlite3")
         }
     }
     
@@ -51,12 +52,10 @@ kotlin {
 //    }
     
     sourceSets {
-
+        
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.koin.android)
-            implementation(libs.android.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -71,31 +70,26 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.nav)
+            implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+
+            // https://github.com/vinceglb/FileKit?tab=readme-ov-file
             implementation(libs.filekit.core)
+            implementation(libs.filekit.compose)
 
-            implementation(projects.lib.features.wardrobe)
-            api(projects.lib.features.wardrobe.data)
-            api(projects.lib.features.outfits.data)
+            // https://github.com/onseok/peekaboo
+            implementation("io.github.onseok:peekaboo-ui:0.5.2")
 
+            implementation(projects.lib.features.wardrobe.domain)
             implementation(projects.lib.features.shared)
-        }
-        iosMain.dependencies {
-            implementation(libs.sqldelight.native.driver)
         }
     }
 }
 
 android {
-    namespace = "com.digi.virtualwardrobe"
+    namespace = "com.digi.virtualwardrobe.outfits"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "com.digi.virtualwardrobe"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -112,13 +106,7 @@ android {
     }
 }
 
-
-sqldelight {
-    databases {
-        create("WardrobeDatabase") {
-            packageName.set("com.digi.virtualwardrobe")
-            dependency(projects.lib.features.wardrobe.data)
-            dependency(projects.lib.features.outfits.data)
-        }
-    }
+dependencies {
+    debugImplementation(compose.uiTooling)
 }
+

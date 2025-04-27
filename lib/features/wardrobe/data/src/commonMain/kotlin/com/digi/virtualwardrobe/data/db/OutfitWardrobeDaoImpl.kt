@@ -2,7 +2,7 @@ package com.digi.virtualwardrobe.data.db
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
-import com.digi.virtualwardrobe.wardrobe.data.OutfitEntity
+import com.digi.virtualwardrobe.outfits.data.OutfitEntity
 import com.digi.virtualwardrobe.wardrobe.data.OutfitWardrobeEntityQueries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -16,7 +16,11 @@ class OutfitWardrobeDaoImpl(
             .asFlow()
             .mapToList(Dispatchers.IO)
 
-    override suspend  fun insertOutfitWardrobe(outfitId: Long, wardrobeId: Long) {
-        wardrobeEntityQueries.insertOutfitWardrobe(outfitId, wardrobeId)
+    override suspend  fun insertOutfitWardrobe(outfitId: Long, wardrobeId: List<Long>) {
+        wardrobeEntityQueries.transaction {
+            wardrobeId.forEach {
+                wardrobeEntityQueries.insertOutfitWardrobe(null, outfitId, it)
+            }
+        }
     }
 }
